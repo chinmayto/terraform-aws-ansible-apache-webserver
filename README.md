@@ -364,7 +364,7 @@ Apply complete! Resources: 13 added, 0 changed, 0 destroyed.
 ```
 
 Apply command will show the logs how how ansible runs playbooks on all managed nodes
-```ansible
+```bash
 null_resource.execute_script: Provisioning with 'remote-exec'...
 null_resource.execute_script (remote-exec): Connecting to remote host via SSH...
 null_resource.execute_script (remote-exec):   Host: 44.206.231.153
