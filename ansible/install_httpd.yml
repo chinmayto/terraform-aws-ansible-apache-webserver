@@ -1,0 +1,39 @@
+---
+- name: installing httpd
+  hosts: webservers
+  become: true
+  tasks: 
+    - name: installing httpd package 
+      yum: 
+        name: httpd
+        state: installed
+      notify: start httpd service
+    
+    - name: modify home page
+      shell: |
+        TOKEN=$(curl --request PUT "http://169.254.169.254/latest/api/token" --header "X-aws-ec2-metadata-token-ttl-seconds: 3600")
+
+        instanceId=$(curl -s http://169.254.169.254/latest/meta-data/instance-id --header "X-aws-ec2-metadata-token: $TOKEN")
+        instanceAZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone --header "X-aws-ec2-metadata-token: $TOKEN")
+        pubHostName=$(curl http://169.254.169.254/latest/meta-data/public-hostname --header "X-aws-ec2-metadata-token: $TOKEN")
+        pubIPv4=$(curl http://169.254.169.254/latest/meta-data/public-ipv4 --header "X-aws-ec2-metadata-token: $TOKEN")
+        privHostName=$(curl -s http://169.254.169.254/latest/meta-data/local-hostname --header "X-aws-ec2-metadata-token: $TOKEN")
+        privIPv4=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4 --header "X-aws-ec2-metadata-token: $TOKEN")
+        
+        echo "<font face = "Verdana" size = "5">"                               > /var/www/html/index.html
+        echo "<center><h1>EC2 Apache Webserver configured with Ansible!</h1></center>"   >> /var/www/html/index.html
+        echo "<center> <b>EC2 Instance Metadata</b> </center>"                  >> /var/www/html/index.html
+        echo "<center> <b>Instance ID:</b> $instanceId </center>"               >> /var/www/html/index.html
+        echo "<center> <b>AWS Availablity Zone:</b> $instanceAZ </center>"      >> /var/www/html/index.html
+        echo "<center> <b>Public Hostname:</b> $pubHostName </center>"          >> /var/www/html/index.html
+        echo "<center> <b>Public IPv4:</b> $pubIPv4 </center>"                  >> /var/www/html/index.html
+
+        echo "<center> <b>Private Hostname:</b> $privHostName </center>"        >> /var/www/html/index.html
+        echo "<center> <b>Private IPv4:</b> $privIPv4 </center>"                >> /var/www/html/index.html
+        echo "</font>"                                                          >> /var/www/html/index.html
+
+  handlers:   
+  - name: start httpd service
+    service:
+      name: httpd
+      state: started
