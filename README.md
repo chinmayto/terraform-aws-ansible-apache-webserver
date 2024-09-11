@@ -202,7 +202,7 @@ Before running other tasks, we’ll ensure that the control node adds the manage
 (Either disable host checking or add hosts to known_hosts file, second way is more secure way!)
 
 Create a playbook add_known_hosts.yml:
-```ansible
+```yml
 ---
 - name: Gather facts from 'webservers' hosts in inventory
   hosts: webservers
@@ -232,7 +232,7 @@ Create a playbook add_known_hosts.yml:
 ```
 Command to run this playbook:
 
-```ansible
+```shell
 cd ansible
 ansible-playbook -i inventory.ini --private-key ec2_keypair.pem add_to_ssh_known_hosts.yml -u ec2-user
 ```
@@ -242,7 +242,7 @@ ansible-playbook -i inventory.ini --private-key ec2_keypair.pem add_to_ssh_known
 Finally, we’ll apply a playbook to install and start the Apache HTTP server on all managed nodes. I have used list of commands to build index.html file.
 Otherwise, we can install git on managed nodes and clone the git repo with a full fleged website pages.
 
-```ansible
+```yml
 ---
 - name: installing httpd
   hosts: webservers
@@ -285,7 +285,7 @@ Otherwise, we can install git on managed nodes and clone the git repo with a ful
 ```
 
 command to run this playbook:
-```ansible
+```shell
 ansible-playbook -i inventory.ini --private-key ec2_keypair.pem install_httpd.yml -u ec2-user
 ```
 (I have used ansible ping command just to show the reachablity of managed nodes from control node)
