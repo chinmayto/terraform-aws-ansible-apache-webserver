@@ -184,14 +184,14 @@ I have used remote-exec provisioners to perform this tasks just to explanation, 
 1. Upload Playbooks to the Ansible Directory
 
 First, create the `ansible` directory on the control node
-```
+```shell
 mkdir ansible
 ```
 and upload ansible playbooks, invenotry file and EC2 key pairs to this directory using `file` provisioners
 
 2. Generate and update `ansible.cfg` to Disable Host Key Checking
 To prevent SSH errors when connecting to the managed nodes, we’ll modify `ansible.cfg` to disable host key checking:
-```ansible
+```conf
 [defaults]
 host_key_checking = False
 ```
