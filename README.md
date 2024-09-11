@@ -574,6 +574,10 @@ known_hosts
 
 ![alt text](/images/known_hosts.png)
 
+Run playbook output
+
+![alt text](/images/playbok.png)
+
 Webservers Configured using Ansible
 
 ![alt text](/images/webserver1.png)
